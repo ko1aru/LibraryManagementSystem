@@ -32,52 +32,58 @@ public class Library {
 							System.out.println("----------------Select what you want to do----------------");
 							System.out.println("1. Add a book\n2. Delete a book\n3. Display all books\n"
 									+ "4. Borrow a book\n5. Return a book\n6. Exit");
-							int option = sc.nextInt();
-							sc.nextLine();
-							
-							switch (option) {
-							case 1:
-								addBook(bookList, user, sc);
-								System.out.println("\n-----------------------------------------------------\n\n\n");
-								break;
+							try {
+								int option = sc.nextInt();
+								sc.nextLine();
 								
-							case 2:
-								deleteBook(bookList, user, sc);
-								System.out.println("-----------------------------------------------------\n\n\n");
-								break;
-								
-							case 3:
-								displayBooks(bookList);
-								System.out.println("-----------------------------------------------------\n\n\n");
-								break;
-								
-							case 4:
-								borrowBook(bookList, user, sc, cal);
-								System.out.println("-----------------------------------------------------\n\n\n");
-								break;
-								
-							case 5:
-								returnBook(bookList, sc, cal);
-								System.out.println("-----------------------------------------------------\n\n\n");
-								break;
-								
-							case 6:
-								flag = false;
-								System.out.println("-----------------------------------------------------\n\n\n");
-								break;
-								
-							default:
-								System.out.println("Invalid option\n-----------------------------------------------------\n\n\n");
-								break;
+								switch (option) {
+								case 1:
+									addBook(bookList, user, sc);
+									System.out.println("\n-----------------------------------------------------\n\n\n");
+									break;
+									
+								case 2:
+									deleteBook(bookList, user, sc);
+									System.out.println("-----------------------------------------------------\n\n\n");
+									break;
+									
+								case 3:
+									displayBooks(bookList);
+									System.out.println("-----------------------------------------------------\n\n\n");
+									break;
+									
+								case 4:
+									borrowBook(bookList, user, sc, cal);
+									System.out.println("-----------------------------------------------------\n\n\n");
+									break;
+									
+								case 5:
+									returnBook(bookList, sc, cal);
+									System.out.println("-----------------------------------------------------\n\n\n");
+									break;
+									
+								case 6:
+									flag = false;
+									System.out.println("-----------------------------------------------------\n\n\n");
+									break;
+									
+								default:
+									System.out.println("Invalid option\n-----------------------------------------------------\n\n\n");
+									break;
+								}
+							} catch (InputMismatchException e1) {
+								System.out.println("Please enter a valid response (1-6)\n\n");
+								sc.nextLine();
 							}
+							
 						}
 					}
-					else System.out.println("User id \""+existingUserId+"\" doesn't exists");
+					else System.out.println("User id \""+existingUserId+"\" doesn't exists\n\n");
 				}
 				break;
 				
 			default:
-				System.out.println("Invalid response!");
+				System.out.println("Invalid response!\n\n");
 				break;
 			}
 		}
@@ -88,11 +94,11 @@ public class Library {
 		userObj.setId();
 		
 		System.out.println("Enter your name");
-		String name = "a";//sc.nextLine();
+		String name = sc.nextLine();
 		userObj.setName(name);
 		
 		System.out.println("Enter you DOB (DD-MM-YYYY)");
-		String dob = "25-09-2001";//sc.nextLine();
+		String dob = sc.nextLine();
 		userObj.setDob(dob);
 		
 		System.out.println("Select your Role:\n1. User\n2. Admin");
@@ -116,17 +122,17 @@ public class Library {
 			Book bookObj = new Book();
 			
 			System.out.println("Enter the title: ");
-			bookObj.title = "alice";//sc.nextLine();	
+			bookObj.title = sc.nextLine();	
 			
 			System.out.println("Enter the author's name: ");
-			bookObj.author = "Lewis Caroll";//sc.nextLine();
+			bookObj.author = sc.nextLine();
 			
 			System.out.println("Enter the ISBN No.");
-			bookObj.isbn = "007";//sc.nextLine();
+			bookObj.isbn = sc.nextLine();
 			
 			bookList.add(bookObj);
 			
-			System.out.println("Book added!\nBook name: "+bookObj.title+"\nBook Author: "+bookObj.author+
+			System.out.println("\nBook added!\nBook name: "+bookObj.title+"\nBook Author: "+bookObj.author+
 					"\nISBN: "+bookObj.isbn);
 		} else System.out.println("You need to be an admin to perform this operation");
 		
@@ -154,40 +160,45 @@ public class Library {
 	public static Book findBook(List<Book> bookList, Scanner sc) {
 		Book book = new Book();
 		System.out.println("Select search criteria\n1. Title\n2. Author");
-		int criteria = sc.nextInt();
-		sc.nextLine();
-		
-		switch (criteria) {
-		case 1:
-			System.out.println("Enter the title: ");
-			String title = sc.nextLine();			
-			
-			for (Book x : bookList) {
-				if (title.toLowerCase().contains(x.title)) {
-					System.out.println("Book found!");
-					book = x;
-					System.out.println("Book name: "+book.title+"\nAuthor: "+book.author);
-				} else System.out.println("Book not found\n\n");
+		try {
+			int criteria = sc.nextInt();
+			sc.nextLine();
+			switch (criteria) {
+			case 1:
+				System.out.println("Enter the title: ");
+				String title = sc.nextLine();			
+				
+				for (Book x : bookList) {
+					if (title.toLowerCase().contains(x.title)) {
+						System.out.println("\nBook found!");
+						book = x;
+						System.out.println("\nBook name: "+book.title+"\nAuthor: "+book.author+"\n");
+					} else System.out.println("Book not found\n\n");
+				}
+				return book;
+				
+			case 2:
+				System.out.println("Enter the Author's name: ");
+				String authorName = sc.nextLine();
+				
+				for (Book x : bookList) {
+					if (authorName.equalsIgnoreCase(x.author)) {
+						System.out.println("Author found!");
+						book = x;
+						System.out.println("Book name: "+book.title+"\nAuthor: "+book.author);
+					} else System.out.println("Author not found\n\n");
+				}
+				return book;
+				
+			default:
+				System.out.println("Invalid choice!\n\n");
+				return book;
 			}
-			return book;
-			
-		case 2:
-			System.out.println("Enter the Author's name: ");
-			String authorName = sc.nextLine();
-			
-			for (Book x : bookList) {
-				if (authorName.equalsIgnoreCase(x.author)) {
-					System.out.println("Author found!");
-					book = x;
-					System.out.println("Book name: "+book.title+"\nAuthor: "+book.author);
-				} else System.out.println("Author not found\n\n");
-			}
-			return book;
-			
-		default:
-			System.out.println("Invalid choice!\n\n");
-			return book;
-		}		
+		} catch (InputMismatchException e1) {
+			System.out.println("Please enter '1' or '2'");
+			sc.nextLine();
+			return findBook(bookList, sc);
+		}
 	}
 	
 	public static void displayBooks(List<Book> bookList) {
@@ -201,8 +212,7 @@ public class Library {
 			for (int i=0; i<29-x.author.length(); i++) {
 				System.out.print(" ");
 			}
-			System.out.print(x.isBorrowed ? "Not available" : "Available\n");
-			System.out.println("-----------------------------------------------------\n");
+			System.out.print(x.isBorrowed ? "Not available\n" : "Available\n");
 		}
 	}
 	
